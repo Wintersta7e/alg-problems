@@ -1,6 +1,7 @@
 # file:
 .DS_Store
 .idea
+*out
 
 # Compiled class file
 *.class
