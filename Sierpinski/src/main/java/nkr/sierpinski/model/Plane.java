@@ -1,37 +1,21 @@
-package model;
+package nkr.sierpinski.model;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-/**
- * A plane class that can be set up with predefined edges and the starting position
- */
 public class Plane {
-
-    private static final Paint EDGE_COLOR = Color.RED;
-    private static final Paint POINT_COLOR = Color.AQUAMARINE;
-    private static final int FILL_RADIUS = 1;
-    private static final Random RANDOM = new Random();
-    private static final double EDGE_RADIUS = 2;
-    private static final double FACTOR = 0.5;
-
     private GraphicsContext gc;
     private List<List<Point2D>> edges;
     private List<Point2D> activePoints;
     private int activeEdgeGroup;
     private int selectedEdgeGroup;
 
-    /**
-     * Construct a new empty plane associated with the given canvas
-     * @param canvas
-     */
-    public Plane (Canvas canvas)
-    {
+    public Plane(Canvas canvas) {
         gc = canvas.getGraphicsContext2D();
 
         edges = new ArrayList<>();
@@ -47,8 +31,8 @@ public class Plane {
      */
     public void addEdge (Point2D position)
     {
-        gc.setFill(EDGE_COLOR);
-        gc.fillOval(position.getX(), position.getY(), EDGE_RADIUS, EDGE_RADIUS);
+        gc.setFill(PlaneProperties.EDGE_COLOR);
+        gc.fillOval(position.getX(), position.getY(), PlaneProperties.EDGE_RADIUS, PlaneProperties.EDGE_RADIUS);
         edges.get(selectedEdgeGroup).add(position);
     }
 
@@ -58,8 +42,8 @@ public class Plane {
      */
     public void addStartingPoint (Point2D position)
     {
-        gc.setFill(POINT_COLOR);
-        gc.fillOval(position.getX(), position.getY(), FILL_RADIUS, FILL_RADIUS);
+        gc.setFill(PlaneProperties.POINT_COLOR);
+        gc.fillOval(position.getX(), position.getY(), PlaneProperties.FILL_RADIUS, PlaneProperties.FILL_RADIUS);
         activePoints.add(position);
     }
 
@@ -73,8 +57,8 @@ public class Plane {
         for (Point2D point : activePoints)
         {
             nextActivePoints.add(nextPoint(point));
-            gc.setFill(POINT_COLOR);
-            gc.fillOval(point.getX(), point.getY(), FILL_RADIUS, FILL_RADIUS);
+            gc.setFill(PlaneProperties.POINT_COLOR);
+            gc.fillOval(point.getX(), point.getY(), PlaneProperties.FILL_RADIUS, PlaneProperties.FILL_RADIUS);
         }
 
         activePoints = nextActivePoints;
@@ -94,7 +78,7 @@ public class Plane {
             randomEdge = pickRandomEdge();
         }
 
-        return (point.add(randomEdge.get()).multiply(FACTOR));
+        return (point.add(randomEdge.get()).multiply(PlaneProperties.FACTOR));
     }
 
     /**
@@ -107,7 +91,7 @@ public class Plane {
 
         if (edgeGroup.size() > 0)
         {
-            return Optional.of(edgeGroup.get(RANDOM.nextInt(edgeGroup.size())));
+            return Optional.of(edgeGroup.get(PlaneProperties.RANDOM.nextInt(edgeGroup.size())));
         } else {
             return Optional.empty();
         }
